@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+.env
+*.zip
+# never commit photos you do not own the rights to (for example video frames)
+/raw/
+/data/

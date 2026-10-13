@@ -1,0 +1,124 @@
+{
+  "_meta": {
+    "purpose": "Reference constants for the UCO-to-biodiesel app (grading, yield, pricing, demand, emissions). Every value has a confidence flag. 'assumption' = my modelling choice, expose as an editable input in the UI and label it as an estimate.",
+    "compiled": "2026-10-10",
+    "confidence_scale": ["high = regulator/government/primary", "medium = secondary or single study", "low = trade listing, blog, hobbyist guide", "assumption = modelling choice"]
+  },
+
+  "grading": {
+    "edibility_limit_tpc_percent": { "value": 25, "confidence": "high", "note": "FSSAI maximum Total Polar Compounds for cooking oil. Above this the oil must not be used for cooking. This is the 'retire the oil' trigger.", "source": "https://www.fssai.gov.in/about-ruco" },
+    "visual_cues_oil_past_limit": { "value": ["blue-grey smoke when heating", "tough persistent foam", "dark and murky oil"], "confidence": "medium", "note": "Cues listed in FSSAI RUCO news note. Screening cues only, not a measurement.", "source": "https://www.fssai.gov.in/upload/media/FSSAI_News_RUCO_01_01_2020.pdf" },
+    "ffa_classes_percent": {
+      "yellow_grease": { "ffa_max": 15, "confidence": "high", "note": "Used fryer oil, typically under 15% FFA" },
+      "brown_grease": { "ffa_min": 15, "typical_range": "50-100 for trap grease", "confidence": "medium", "note": "Trap/sewer grease. Needs heavy pretreatment, generally not accepted as feedstock." }
+    },
+    "processing_thresholds_ffa_percent": {
+      "alkali_only_ok_up_to": { "value": "1-2", "confidence": "medium" },
+      "yield_loss_starts_above": { "value": 4, "confidence": "low" },
+      "two_step_acid_then_base_range": { "value": "4-20", "confidence": "low" },
+      "brown_grease": { "value": "repeated acid esterification to reach <1", "confidence": "medium" },
+      "single_study_yield_datapoint": { "value": "10.5% FFA untreated -> 40% yield; pretreated to 2% FFA -> 76% yield", "confidence": "medium", "note": "One study, use only to justify a grade-based yield penalty." }
+    },
+    "biodiesel_product_standard": { "value": "IS 15607:2022 (B100)", "confidence": "high", "note": "Standard named in OMC procurement tenders." },
+    "app_grades_proposed": {
+      "confidence": "assumption",
+      "note": "Visual screening grades for the app. No validated colour-to-FFA mapping exists in the literature I found, so your own labelled photos define the mapping. Always state: processor confirms with a lab test.",
+      "A": { "label": "Prime feedstock", "cues": "light to mid amber, clear, little sediment", "price_inr_per_litre": [48, 60] },
+      "B": { "label": "Standard feedstock", "cues": "dark brown, some sediment or foam, needs pretreatment", "price_inr_per_litre": [35, 45] },
+      "C": { "label": "Low-grade feedstock", "cues": "near black, viscous, heavy sludge, burnt smell", "price_inr_per_litre": [20, 28] },
+      "Reject": { "label": "Not accepted", "cues": "visible water layer, trap grease or mixed non-oil waste", "price_inr_per_litre": [0, 0] },
+      "retire_alert": "If cues match 'visual_cues_oil_past_limit', show 'likely past the 25% TPC limit, stop frying with this oil'."
+    }
+  },
+
+  "conversion": {
+    "lab_conversion_oil_to_fame_percent": { "value": [95, 97], "confidence": "medium", "note": "Controlled lab transesterification of clean oil." },
+    "volume_per_tonne_uco_litres": { "value": 1043, "confidence": "high", "source": "USDA FAS GAIN India Biofuels Annual (1 MT UCO = 1,043 litres)" },
+    "collected_oil_contamination_percent": { "value": 10, "confidence": "assumption", "note": "A hobbyist guide claims roughly 20% of restaurant-collected oil is water and food bits (low reliability). Default 10, let users move 0-20." },
+    "effective_yield_litres_biodiesel_per_litre_collected": {
+      "A": { "value": 0.86, "confidence": "assumption", "derivation": "(1 - 0.10 contamination) x 0.95 conversion" },
+      "B": { "value": 0.78, "confidence": "assumption", "derivation": "A yield less pretreatment loss" },
+      "C": { "value": 0.65, "confidence": "assumption", "derivation": "heavier pretreatment and impurity loss" }
+    },
+    "byproduct": { "value": "glycerol (about 10% by mass)", "confidence": "assumption", "note": "Show only as a qualitative co-product unless you source a figure." }
+  },
+
+  "prices_inr": {
+    "uco_collection_price_per_litre": {
+      "range_by_quality": { "low_grade": [20, 25], "high_grade": [50, 60], "confidence": "medium", "source": "Pahle India UCO biodiesel research paper" },
+      "official_2019_reference": { "value": 51, "confidence": "medium", "note": "Price fixed from August 2019 for UCO biodiesel under the earlier scheme; use as history only." }
+    },
+    "interstate_transport_per_litre": { "value": [5, 7], "confidence": "medium" },
+    "omc_biodiesel_b100_price_per_litre": {
+      "value": [80, 100], "confidence": "medium",
+      "note": "Sources conflict. Tender document: base Rs 80/L for Apr-Jul 2025 (excl. GST and transport) and that tender covers non-UCO feedstocks. Trade press reports Rs 91.20 (Oct 2024-Jan 2025) and Rs 100.12 (Feb-Sep 2025). UCO biodiesel is procured under a separate EOI. Keep as an editable input and state the date.",
+      "sources": ["http://www.svlele.com/bd/tender13_apr25.pdf", "https://advancebiofuel.in/biodiesel-vs-traditional-diesel-efficiency-cost-environment/"]
+    },
+    "trade_listing_premium_uco": { "value": [70, 80], "confidence": "low", "note": "Single ExportersIndia listing. Do not use as a headline number." }
+  },
+
+  "demand_india": {
+    "blending_target_percent_by_2030": { "value": 5, "confidence": "high", "note": "National Policy on Biofuels, on-road diesel" },
+    "volume_needed_for_5pct_litres_per_year": { "value": 4500000000, "confidence": "high", "source": "USDA FAS GAIN India Biofuels Annual 2025 (about 4.5 billion litres)" },
+    "diesel_consumption_litres_per_month": { "value": 7500000000, "confidence": "high", "source": "USDA FAS GAIN 2025 (7.5 billion litres per month)" },
+    "current_blend_percent": { "value": [0.5, 0.63], "confidence": "high", "note": "OMC blend about 0.49% in the 2025 report; national average projected 0.63% for 2026; USDA expects it to stay below 1% in 2026." },
+    "omc_biodiesel_procurement": {
+      "fy2025_26_tender_litres": 200000000,
+      "previous_year_target_litres": 860000000,
+      "reported_2024_procurement_litres": 489300000,
+      "confidence": "medium",
+      "note": "Figures come from trade press and differ by source; show as 'hundreds of millions of litres' rather than one precise number."
+    },
+    "uco_potential_litres": { "value": 2200000000, "confidence": "medium", "note": "FSSAI-stated potential of about 220 crore litres recoverable by 2022 (2019 estimate, secondary reporting). Another source estimates 148 crore litres available. Present as 'estimated potential'." },
+    "ruco_programme": { "value": "64 companies at 101 locations identified for collection at launch", "confidence": "medium" },
+    "supply_gap_message": "Blending is about 0.5-0.6% against a 5% target, so feedstock collection, not demand, is the bottleneck."
+  },
+
+  "energy_and_emissions": {
+    "lifecycle_ghg_reduction_uco_biodiesel_vs_diesel_percent": { "default": 80, "range": [70, 86], "confidence": "medium", "note": "JEC reports more than 70% well-to-wheel; Argonne GREET-based figures cite 79-86% for UCO biodiesel (secondary source). Default 80%, show range." },
+    "carbon_intensity_g_co2e_per_mj": { "uco_biodiesel": 21.7, "fossil_diesel": 95, "confidence": "low", "note": "US-based values from a trade blog citing GREET. Not India-specific. Say so in the UI." },
+    "energy_content": {
+      "diesel_mj_per_kg": { "value": 43, "confidence": "medium" },
+      "uco_biodiesel_mj_per_kg": { "value": 36, "confidence": "low", "note": "Trade listing value (36,000 kJ/kg)." },
+      "biodiesel_density_kg_per_litre": { "value": 0.88, "confidence": "assumption" },
+      "diesel_density_kg_per_litre": { "value": 0.84, "confidence": "assumption" }
+    },
+    "derived_defaults": {
+      "confidence": "assumption",
+      "co2e_avoided_kg_per_litre_biodiesel": { "value": 2.3, "formula": "(95 - 21.7) g/MJ x (36 MJ/kg x 0.88 kg/L) / 1000", "note": "Uses US carbon intensities. Show as an estimate with the formula visible." },
+      "diesel_displaced_litres_per_litre_biodiesel": { "value": 0.88, "formula": "(36 x 0.88) / (43 x 0.84)" }
+    },
+    "net_energy_ratio_uco_biodiesel": { "value": 5.49, "confidence": "medium", "source": "Springer LCA study (cradle-to-gate)" }
+  },
+
+  "ui_formulas": {
+    "biodiesel_litres": "collected_litres x effective_yield[grade]",
+    "diesel_displaced_litres": "biodiesel_litres x 0.88",
+    "co2e_avoided_kg": "biodiesel_litres x 2.3",
+    "vendor_payout_inr": "collected_litres x price_per_litre[grade]",
+    "share_of_5pct_target": "annual_biodiesel_litres / 4500000000"
+  },
+
+  "labelling_guidance_for_your_dataset": {
+    "problem": "No public colour-to-FFA or colour-to-TPC mapping I found is validated for phone photos.",
+    "recommended_labels": ["number of frying cycles (ordinal, free)", "TPC reading if you can borrow a meter or strips (best)", "your own A/B/C/Reject call from the cues above"],
+    "always_include": "reference colour card and clear cup in every photo; same lighting angle; log oil type"
+  },
+
+  "sources": [
+    "https://www.fssai.gov.in/about-ruco",
+    "https://www.fssai.gov.in/upload/media/FSSAI_News_RUCO_01_01_2020.pdf",
+    "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Biofuels+Annual_New+Delhi_India_IN2025-0031.pdf",
+    "https://www.fas.usda.gov/data/gain-report/2026/07/Biofuels%20Annual_New%20Delhi_India_IN2026-0039.pdf",
+    "http://www.svlele.com/bd/tender13_apr25.pdf",
+    "https://www.autocarpro.in/news/indian-omcs-kick-off-biodiesel-procurement-for-fy-2026-with-major-tender-125941",
+    "https://advancebiofuel.in/biodiesel-vs-traditional-diesel-efficiency-cost-environment/",
+    "https://pahleindia.org/wp-content/uploads/2022/12/UsedCookingOilBasedBiodiesel.pdf",
+    "https://www.sciencedirect.com/science/article/abs/pii/S0016236110001031",
+    "https://www.degruyterbrill.com/document/doi/10.1515/gps-2017-0118/html?lang=en",
+    "https://mappingignorance.org/2026/02/16/used-cooking-oil/",
+    "https://greaseconnections.com/biodiesel-lifecycle-emissions-vs-diesel/",
+    "https://link.springer.com/article/10.1007/s10668-024-05692-1",
+    "https://biofuels-news.com/news/the-conversion-of-used-cooking-oils-into-biodiesel/"
+  ]
+}

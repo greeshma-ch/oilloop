@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OilLoop</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F4F1;--card:#fff;--line:#DDE3DC;--ink:#14221B;--mute:#55655B;--g:#206B4B;--gd:#1D2B24;--am:#CC7F12;--as:#FAE6C4;--ai:#5A3A0B;--br:#8B6B3E;--rd:#A8372B;--tr:#E2E8E1}
+*{box-sizing:border-box;min-width:0}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 Inter,system-ui,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;max-width:1100px;margin:0 auto;padding:12px 16px}
+.logo{font-weight:800;font-size:18px}nav{display:flex;background:var(--tr);border-radius:999px;padding:3px}
+nav a{padding:9px 13px;border-radius:999px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;min-height:40px}nav a.on{background:var(--g);color:#fff}
+#app{max-width:440px;margin:0 auto;padding:4px 16px 56px}#app.wide{max-width:1100px}
+h1{font-size:30px;line-height:1.1;margin:6px 0;font-weight:800;letter-spacing:-.02em}
+.lab{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:600;display:block;margin:12px 0 4px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.mute,.foot{color:var(--mute);font-size:14px}.foot{text-align:center;margin-top:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:12px 0}
+.panel{background:var(--gd);border-radius:22px;padding:22px 18px;margin:12px 0;color:#fff;text-align:center}.panel p{margin:8px 0}
+.pv{width:100%;max-height:220px;object-fit:contain;border-radius:14px}.rp{width:100%;max-height:200px;object-fit:cover;border-radius:14px;display:block}
+.bar,.trk{height:10px;background:#ffffff26;border-radius:9px;overflow:hidden;margin:10px 0}.trk{background:var(--tr)}.bar i,.trk i{display:block;height:100%;background:#7FD1A0;border-radius:9px;transition:width .5s}.trk i{background:var(--g)}
+.row{display:flex;gap:10px}.row>*{flex:1}.g2{display:grid;gap:12px}.g3{display:grid;gap:12px}
+@media(min-width:900px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}}
+input,select{width:100%;padding:14px;border:1px solid #C9D2C7;border-radius:16px;font:inherit;background:#fff;color:var(--ink)}
+.btn{display:block;width:100%;min-height:56px;border:0;border-radius:28px;background:var(--g);color:#fff;font:800 17px Inter,system-ui;margin-top:12px;cursor:pointer}
+.btn.alt{background:#fff;color:var(--ink);border:1px solid #C9D2C7;font-weight:600}.btn.out{background:#fff;color:var(--ink);border:1px solid #C9D2C7}.btn:disabled{opacity:.45}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.chip{padding:11px 18px;min-height:44px;border-radius:999px;border:1px solid #C9D2C7;background:#fff;font:600 16px Inter,system-ui;color:var(--ink)}.chip.on{background:var(--g);color:#fff;border-color:var(--g)}
+.lnk{color:var(--g);font-weight:600}.big{font-size:56px;font-weight:800;line-height:1}.gr2{display:flex;align-items:center;gap:12px;margin:6px 0}
+.chip2{background:var(--as);color:var(--ai);font-weight:600;border-radius:12px;padding:6px 12px;font-size:15px}
+.ban{background:var(--as);border:1px solid var(--am);color:var(--ai);border-radius:16px;padding:14px;margin:12px 0}
+.hl{background:var(--as);color:var(--ai);border-radius:8px;padding:2px 6px}.card ul{margin:6px 0;padding-left:20px}
+.scale{height:10px;border-radius:9px;background:linear-gradient(90deg,#E9C46A,#CC7F12,#6B4423,#1b1208);position:relative;margin:14px 0 4px}.scale i{position:absolute;top:-5px;width:6px;height:20px;border-radius:3px;background:var(--ink);border:2px solid #fff;transform:translateX(-50%)}
+.sc{display:flex;justify-content:space-between;font-size:12px;color:var(--mute)}.kv{display:flex;justify-content:space-between;gap:10px;padding:6px 0}.kv b{text-align:right}
+.val{font-size:32px;font-weight:800;letter-spacing:-.02em}.tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}.tile{background:var(--bg);border-radius:14px;padding:10px;font-size:12px;color:var(--mute)}.tile b{display:block;font-size:19px;color:var(--ink)}
+.step{display:flex;align-items:center;justify-content:space-between;gap:10px}.step button{width:48px;height:48px;border-radius:50%;border:1px solid #C9D2C7;background:#fff;font-size:22px}.step input{text-align:center;font-weight:800;font-size:22px;border:0;width:90px}
+.slot{display:flex;gap:12px;align-items:center;padding:12px 0;font-size:18px}.slot input{width:22px;height:22px}.slot.off{opacity:.4}
+.ok{width:84px;height:84px;margin:20px auto;display:block}.ok circle,.ok path{fill:none;stroke:var(--g);stroke-width:6;stroke-linecap:round;stroke-dasharray:260;stroke-dashoffset:260;animation:dr .6s .1s forwards}
+.stop{display:flex;justify-content:space-between;align-items:center;gap:10px}.stop b{display:block}.g{background:var(--as);color:var(--ai);font-weight:800;border-radius:10px;padding:6px 12px}
+.tag{font-size:11px;background:var(--rd);color:#fff;border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:600}
+.hb{height:12px;border-radius:9px;margin:4px 0 12px;transform-origin:left;animation:gr .5s both}.err{background:#fde8e4;border:1px solid var(--rd);color:var(--rd);border-radius:16px;padding:14px;margin:12px 0}
+.ov{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:16px;z-index:9}.ov .card{max-width:420px;width:100%;margin:0}summary{font-weight:600;cursor:pointer}.sel{width:auto;padding:8px}
+.st{animation:drop .35s cubic-bezier(.2,.8,.2,1) both}#liq{transition:transform .6s ease-out}.run .wv{animation:wv 1.2s linear infinite}
+@keyframes drop{from{opacity:0;transform:translateY(-12px)}}@keyframes wv{to{transform:translateX(-40px)}}@keyframes dr{to{stroke-dashoffset:0}}@keyframes gr{from{transform:scaleX(0)}}
+@media(prefers-reduced-motion:reduce){.st,.hb,.run .wv{animation:none}#liq{transition:none}.ok circle,.ok path{animation:none;stroke-dashoffset:0}.st{animation:fade .15s both}@keyframes fade{from{opacity:0}}}
+</style></head><body>
+<header><span class="logo">🛢️ OilLoop</span><nav><a href="#/vendor/capture" data-r="#/vendor">Vendor</a><a href="#/collector" data-r="#/collector">Collector</a><a href="#/processor" data-r="#/processor">Processor</a></nav></header>
+<main id="app"></main>
+<script>
+const API="https://12z0y4f75i.execute-api.ap-southeast-2.amazonaws.com";
+// If /listings, /pickup, /request-pickup and /lab-result live on a SECOND API, paste its invoke URL here:
+const API2="https://r7yiq5qqd6.execute-api.ap-southeast-2.amazonaws.com";
+const U=p=>(/^\/(listings|pickup|request-pickup|lab-result)$/.test(p)?API2:API)+p;
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const LBL={A:"Prime feedstock",B:"Standard feedstock",C:"Low-grade feedstock",Reject:"Not accepted"},SLOT={"08-10":"8:00 to 10:00","10-12":"10:00 to 12:00","16-18":"4:00 to 6:00"};
+const DK={light:["Light amber",12.5],medium:["Amber to brown",37.5],dark:["Dark brown",62.5],black:["Near black",87.5]},FOOT="Screening grade from a photo. The processor confirms with a lab test.";
+const post=(p,b)=>fetch(U(p),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(b)}).then(r=>r.json());
+const ist=(d=0)=>new Date(Date.now()+19800000+d*864e5).toISOString().slice(0,10),dn=d=>new Date(d+"T00:00").toLocaleDateString("en",{weekday:"long"});
+const TRUCK=100,MINFILL=.6;
+const S={dest:"Demo biodiesel facility (DEMO)",key:null,up:"idle",uid:0,file:null,url:"",oil:"",lt:"",fr:"",ar:"",res:null,q0:1,pk:null,done:null,L:[],demo:false,all:false,cd:ist(1)},AS={A:.86,B:.78,C:.65,dd:.88,co:2.3};
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function cu(e){const t=+e.dataset.n,d=+e.dataset.d||0;if(reduce)return;const t0=performance.now();(function f(n){const p=Math.min(1,(n-t0)/600);e.textContent=(t*p).toFixed(d);if(p<1)requestAnimationFrame(f)})(t0)}
+function stag(r){r.querySelectorAll(".st").forEach((e,i)=>e.style.animationDelay=e.classList.contains("pr")?"0ms":Math.min(i*50,600)+"ms");r.querySelectorAll("[data-n]").forEach(cu)}
+function view(h){const a=$("#app");a.innerHTML=h;stag(a)}
+async function toJpeg(f){const b=await createImageBitmap(f),s=Math.min(1,1024/Math.max(b.width,b.height)),c=document.createElement("canvas");c.width=Math.round(b.width*s);c.height=Math.round(b.height*s);c.getContext("2d").drawImage(b,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,"image/jpeg",.85))}
+function notify(stops,tot,saved){const s=stops[0]||{},o=document.createElement("div");o.className="ov";
+o.innerHTML=`<div class="card" role="dialog" aria-label="Route started"><h1 style="font-size:24px">Route started ✓</h1><p><b>${stops.length} stops · ${tot.toFixed(0)} L</b><br><span class="mute">Destination: ${esc(S.dest)}${saved?"":" · demo route, not saved"}</span></p><span class="lab">Vendor notification (next step)</span><p class="mute">Not sent in this prototype. Planned: each vendor gets a WhatsApp or in-app message like:</p><div class="ban">"Your oil pickup is on its way. Slot: ${SLOT[s.request_slot]||"your slot"}. Please keep ${esc(s.volume_litres||"")} L ready."</div><button class="btn" id="ovx">Got it</button></div>`;
+document.body.appendChild(o);$("#ovx").onclick=()=>o.remove();o.onclick=e=>{if(e.target==o)o.remove()}}
+const card=(t,m)=>`<div class="err pr st"><b>${esc(t)}</b>${m?`<p>${esc(m)}</p>`:""}</div>`;
+
+function capture(){
+view(`<div class="top st"><h1>Grade my oil</h1><span class="lab">STEP 1 OF 3</span></div>
+<div class="panel st"><svg id="jar" viewBox="0 0 120 130" width="104" role="img" aria-label="Jar filling with oil"><defs><clipPath id="jc"><rect x="23" y="19" width="74" height="102" rx="13"/></clipPath><linearGradient id="og" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDB84A"/><stop offset="1" stop-color="#B8740F"/></linearGradient></defs><g clip-path="url(#jc)"><g id="liq" style="transform:translateY(${S.up=="done"?0:108}px)"><g class="wv"><path d="M0 8Q10 2 20 8T40 8T60 8T80 8T100 8T120 8T140 8V150H0Z" fill="url(#og)" transform="translate(0 19)"/></g></g></g><rect x="38" y="4" width="44" height="12" rx="5" fill="#fff"/><rect x="20" y="16" width="80" height="108" rx="16" fill="none" stroke="#fff" stroke-width="3"/><rect x="28" y="28" width="5" height="64" rx="2.5" fill="#fff" opacity=".18"/></svg>
+<img id="pv" class="pv" alt="Oil photo preview" ${S.file?`src="${S.url}"`:"hidden"}><p id="hint">${S.up=="done"?"Photo ready":"Glass on white paper, good light"}</p><div class="bar" id="bar" hidden><i style="width:0"></i></div>
+<div class="row"><button class="btn alt" id="cam">Take photo</button><button class="btn alt" id="gal">Gallery</button></div></div>
+<input id="f1" type="file" accept="image/*" capture="environment" hidden><input id="f2" type="file" accept="image/*" hidden>
+<div class="chips st">${["Palm","Sunflower","Groundnut","Mustard","Other"].map(o=>`<button class="chip${S.oil==o?" on":""}" data-o="${o}">${o}</button>`).join("")}</div>
+<div class="row st"><div><label class="lab" for="lt">Litres</label><input id="lt" type="number" min="1" max="1000" placeholder="e.g. 10" value="${esc(S.lt)}"></div><div><label class="lab" for="fr">Times reused (your count)</label><input id="fr" type="number" min="0" placeholder="e.g. 3" value="${esc(S.fr)}"></div></div>
+<label class="lab st" for="ar">Market area</label><input class="st" id="ar" placeholder="e.g. Old city market" value="${esc(S.ar)}"><p class="mute st">We use this to match you with collectors nearby.</p>
+<div id="err"></div><button class="btn st" id="go">Check my oil</button><p class="foot st">${FOOT}</p>`);
+const chk=()=>$("#go").disabled=!(S.up=="done"&&S.key&&+S.lt>0&&+S.lt<=1000&&S.ar.trim());
+const put=(url,blob,cb)=>new Promise((res,rej)=>{const x=new XMLHttpRequest();x.open("PUT",url);x.setRequestHeader("Content-Type","image/jpeg");x.upload.onprogress=e=>{if(e.lengthComputable)cb(e.loaded/e.total*100)};x.onload=()=>x.status<300?res():rej(Error("Upload failed ("+x.status+")"));x.onerror=()=>rej(Error("Network error during upload"));x.send(blob)});
+const setFill=p=>{const l=$("#liq");if(l)l.style.transform=`translateY(${(108*(1-p/100)).toFixed(1)}px)`};
+const startUpload=async()=>{const id=++S.uid;S.up="uploading";S.key=null;chk();$("#jar")?.classList.add("run");const bar=$("#bar");if(bar)bar.hidden=false;setFill(0);
+const hint=t=>{if(id==S.uid&&$("#hint"))$("#hint").textContent=t},prog=v=>{if(id==S.uid){setFill(v);const i=$("#bar i");if(i)i.style.width=v+"%"}};
+try{hint("Preparing your photo");prog(5);const blob=await toJpeg(S.file);hint("Uploading your photo");const u=await post("/upload-url",{content_type:"image/jpeg"});if(!u.upload_url)throw Error(u.error||"Could not start the upload");prog(10);
+await put(u.upload_url,blob,v=>prog(10+v*.9));if(id!=S.uid)return;S.key=u.key;S.up="done";prog(100);hint("Photo ready")}
+catch(e){if(id!=S.uid)return;S.up="error";setFill(0);hint("Upload failed");const er=$("#err");if(er)er.innerHTML=card("Upload failed",e.message)}
+if(id==S.uid){$("#jar")?.classList.remove("run");const b2=$("#bar");if(b2)b2.hidden=true;chk()}};
+const pick=f=>{if(!f)return;S.file=f;S.url=URL.createObjectURL(f);const p=$("#pv");p.src=S.url;p.hidden=false;$("#err").innerHTML="";startUpload()};
+$("#cam").onclick=()=>$("#f1").click();$("#gal").onclick=()=>$("#f2").click();$("#f1").onchange=e=>pick(e.target.files[0]);$("#f2").onchange=e=>pick(e.target.files[0]);
+document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{S.oil=S.oil==c.dataset.o?"":c.dataset.o;document.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x.dataset.o==S.oil))});
+[["lt","lt"],["fr","fr"],["ar","ar"]].forEach(([i,k])=>$("#"+i).oninput=e=>{S[k]=e.target.value;chk()});chk();
+$("#go").onclick=async()=>{const b=$("#go");b.disabled=true;$("#err").innerHTML="";$("#jar").classList.add("run");$("#bar").hidden=false;
+const st=(t,p)=>{$("#hint").textContent=t;$("#bar i").style.width=p+"%"};
+try{st("Reading the oil",60);const c=new AbortController();setTimeout(()=>c.abort(),45000);
+const g=await fetch(API+"/grade",{method:"POST",signal:c.signal,headers:{"content-type":"application/json"},body:JSON.stringify({key:S.key,volume_litres:+S.lt,fry_count:S.fr===""?null:+S.fr,oil_type:S.oil||null,area:S.ar.trim()})}).then(r=>r.json());
+st("Calculating value",100);
+if(g.status=="graded"){S.res=g;S.q0=+S.lt;S.pk=null;location.hash="#/vendor/result";return}
+$("#err").innerHTML=g.status=="retake"?card("Please retake the photo",(g.reason||"")+" Tip: use a clear glass of oil on white paper in daylight."):card(g.error||"Could not grade the photo",g.detail)}
+catch(e){$("#err").innerHTML=card(e.name=="AbortError"?"This is taking too long. Please try again.":"Something went wrong",e.name=="AbortError"?"":e.message)}
+$("#jar").classList.remove("run");$("#bar").hidden=true;$("#hint").textContent="Photo ready";chk()}}
+
+function result(){const g=S.res,c=g.cues||{},d=DK[c.darkness]||["Not read",50],[lo,hi]=g.payout_inr_range;
+view(`<div class="top st"><a class="lnk rtk" href="#/vendor/capture">Retake</a><span class="lab">STEP 2 OF 3</span></div>
+<div class="card st"><img class="rp" src="${S.url}" alt="Your oil photo"></div>
+<div class="card st"><span class="lab">VISUAL GRADE</span><div class="gr2"><span class="big">${esc(g.grade)}</span><span class="chip2">${LBL[g.grade]||""}</span></div>
+${g.method=="cue_rules"?`<p class="mute">Pilot: an AI model reads the photo, and transparent rules set the grade.</p>`:""}
+${g.confidence!=null?`<span class="lab">CONFIDENCE ${Math.round(g.confidence*100)}%</span><div class="trk"><i style="width:${g.confidence*100}%"></i></div>`:""}
+<div class="scale"><i style="left:${d[1]}%"></i></div><div class="sc"><span>light</span><span>medium</span><span>dark</span><span>black</span></div></div>
+${g.retire_check?`<div class="ban pr st"><b>${esc(g.retire_message)}</b></div><div class="card st"><span class="lab">WHY</span><ul>${(g.reasons||[]).filter(r=>!/^Grade and retire check are rule-based/.test(r)).map(r=>`<li>${/test strip/i.test(r)?`<span class="hl">${esc(r)}</span>`:esc(r)}</li>`).join("")}</ul></div>`:""}
+<div class="card st"><span class="lab">WHAT THE MODEL SAW</span><div class="kv"><span>Colour</span><b>${d[0]}</b></div><div class="kv"><span>Sediment</span><b>${{none:"None seen",light:"Light",heavy:"Heavy"}[c.sediment]||"Not read"}</b></div><div class="kv"><span>Foam</span><b>${c.foam_visible?"Seen":"Not seen"}</b></div><div class="kv"><span>Water layer</span><b>${c.water_layer_visible?"Seen":"Not seen"}</b></div>${c.notes?`<p class="mute">${esc(c.notes)}</p>`:""}</div>
+<div class="card st"><span class="lab">ESTIMATED VALUE</span><div class="val">₹${lo} to ₹${hi}</div><p class="mute">for ${esc(g.volume_litres)} L, estimate</p>
+<div class="tiles"><div class="tile">Biodiesel (est.)<b><span data-n="${g.biodiesel_litres_est}" data-d="1">${g.biodiesel_litres_est}</span> L</b></div><div class="tile">Diesel displaced (est.)<b><span data-n="${g.diesel_displaced_litres_est}" data-d="1">${g.diesel_displaced_litres_est}</span> L</b></div><div class="tile">CO2e avoided (est.)<b><span data-n="${g.co2e_avoided_kg_est}" data-d="1">${g.co2e_avoided_kg_est}</span> kg</b></div></div>
+<p class="mute">Visual grade only. Final grade is confirmed at pickup and by lab test.</p></div>
+${g.grade=="Reject"?card("This oil can't be collected","Retake the photo or check for water or non-oil mixture."):`<a class="btn st" style="text-decoration:none;text-align:center;line-height:56px" href="#/vendor/pickup">Schedule pickup</a>`}
+<a class="btn out st rtk" style="text-decoration:none;text-align:center;line-height:54px" href="#/vendor/capture">Retake photo</a><p class="foot st">${FOOT}</p>`);document.querySelectorAll(".rtk").forEach(a=>a.onclick=()=>{S.file=null;S.key=null;S.up="idle";S.url=""})}
+
+function pickup(){const g=S.res,p=S.pk=S.pk||{d:ist(1),s:"10-12",q:S.q0,a:"",n:""},pay=q=>`₹${Math.round(g.payout_inr_range[0]/S.q0*q)} to ₹${Math.round(g.payout_inr_range[1]/S.q0*q)}`;
+const dates=[[ist(0),"Today"],[ist(1),"Tomorrow"],[ist(2),dn(ist(2))]];
+view(`<div class="top st"><h1>Schedule pickup</h1><span class="lab">STEP 3 OF 3</span></div>
+<div class="card st"><span class="lab">YOUR OIL</span><div class="top"><b>${esc(S.oil||"Oil")}, grade ${esc(g.grade)}</b><span class="chip2">${LBL[g.grade]}</span></div></div>
+<div class="card st"><div class="step"><span class="lab">QUANTITY</span><button id="mn" aria-label="Less">-</button><span><input id="q" type="number" min="1" max="1000" value="${p.q}" aria-label="Litres"> L</span><button id="pl" aria-label="More">+</button></div><p class="mute" id="pay">Estimate ${pay(p.q)}</p></div>
+<div class="chips st" id="dc">${dates.map(([d,t])=>`<button class="chip${p.d==d?" on":""}" data-d="${d}">${t}</button>`).join("")}</div>
+<div class="card st" id="sl"></div>
+<div class="card st"><span class="lab">PICKUP ADDRESS</span><input id="ad" maxlength="200" placeholder="Stall or kitchen address" value="${esc(p.a)}"><span class="lab">STALL OR KITCHEN NAME (OPTIONAL)</span><input id="nm" maxlength="60" value="${esc(p.n)}"></div>
+<div id="err"></div><button class="btn st" id="rq">Request pickup</button><p class="foot st">A collector will confirm this slot.</p>`);
+const drawS=()=>{const hr=new Date(Date.now()+19800000).getUTCHours(),td=p.d==ist(0);if(td&&parseInt(p.s)<=hr)p.s=Object.keys(SLOT).find(k=>parseInt(k)>hr)||p.s;
+$("#sl").innerHTML=Object.entries(SLOT).map(([k,t])=>{const off=td&&parseInt(k)<=hr;return`<label class="slot${off?" off":""}"><input type="radio" name="sl" value="${k}" ${p.s==k?"checked":""} ${off?"disabled":""}>${t}</label>`}).join("");
+document.querySelectorAll("[name=sl]").forEach(r=>r.onchange=()=>p.s=r.value)};drawS();
+document.querySelectorAll("#dc .chip").forEach(c=>c.onclick=()=>{p.d=c.dataset.d;document.querySelectorAll("#dc .chip").forEach(x=>x.classList.toggle("on",x==c));drawS()});
+const sq=v=>{p.q=Math.min(1000,Math.max(1,Math.round(+v||1)));$("#q").value=p.q;$("#pay").textContent="Estimate "+pay(p.q)};
+$("#mn").onclick=()=>sq(p.q-1);$("#pl").onclick=()=>sq(p.q+1);$("#q").onchange=e=>sq(e.target.value);
+$("#ad").oninput=e=>p.a=e.target.value;$("#nm").oninput=e=>p.n=e.target.value;
+$("#rq").onclick=async()=>{if(!p.a.trim()){$("#err").innerHTML=card("Please add your pickup address");return}
+const b=$("#rq");b.disabled=true;$("#err").innerHTML="";
+try{const r=await post("/request-pickup",{listing_id:g.id,date:p.d,slot:p.s,address:p.a.trim(),vendor_name:p.n.trim()||undefined,quantity_litres:p.q});if(!r.ok)throw Error(r.error||r.detail||"Request failed");
+S.done={d:p.d,s:p.s,q:p.q};location.hash="#/vendor/done"}catch(e){$("#err").innerHTML=card("Could not request the pickup",e.message=="Failed to fetch"?"Could not reach the server. Please try again in a moment.":e.message);b.disabled=false}}}
+
+function done(){const d=S.done;view(`<svg class="ok st" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42"/><path d="M30 52l14 14 27-30"/></svg><h1 class="st" style="text-align:center">Pickup requested</h1>
+<div class="card st"><div class="kv"><span>Date</span><b>${dn(d.d)}, ${esc(d.d)}</b></div><div class="kv"><span>Time</span><b>${SLOT[d.s]}</b></div><div class="kv"><span>Quantity</span><b>${d.q} L</b></div></div>
+<p class="mute st" style="text-align:center">A collector will confirm this slot.</p><a class="btn st" style="text-decoration:none;text-align:center;line-height:56px" href="#/vendor/capture" id="again">Grade another batch</a>`);
+$("#again").onclick=()=>{Object.assign(S,{key:null,up:"idle",file:null,url:"",oil:"",lt:"",fr:"",ar:"",res:null,pk:null,done:null})}}
+
+const load=async()=>{try{S.L=(await(await fetch(U("/listings"))).json()).items||[]}catch(e){S.L=[]}};
+const demoL=()=>[["Demo market","A",18,"Demo stall 1"],["Demo market","B",25,"Demo stall 2"],["Demo bus stand","C",30,"Demo mess"],["Demo bus stand","B",15,"Demo canteen"],["Demo hostel","A",40,"Demo hostel kitchen"],["Demo gate","B",14,"Demo restaurant"]].map((d,i)=>({id:"demo"+i,demo:true,area:d[0],grade:d[1],volume_litres:d[2],vendor_name:d[3],pickup_status:"requested",request_date:ist(1),request_slot:["08-10","10-12","16-18"][i%3],created_at:new Date().toISOString(),lab_grade:i==1?"C":i==0?"A":null}));
+const all=()=>S.L.concat(S.demo?demoL():[]),dem=i=>i.demo?`<span class="tag">DEMO</span>`:"";
+
+async function collector(){view(`<p class="mute">Loading…</p>`);await load();
+view(`<div class="st"><span class="lab">COLLECTOR</span><h1 id="ct"></h1><p class="mute" id="cs"></p></div>
+<div class="chips st">${[[ist(0),"Today"],[ist(1),"Tomorrow"],[ist(2),dn(ist(2))]].map(([d,t])=>`<button class="chip${S.cd==d?" on":""}" data-d="${d}">${t}</button>`).join("")}</div>
+<label class="mute st"><input type="checkbox" id="dm" style="width:auto" ${S.demo?"checked":""}> Include demo data</label><div class="g2"><div id="rt"></div><div id="cl"></div></div>`);
+const draw=f=>{const c=f?"st":"",stops=all().filter(i=>["requested","scheduled"].includes(i.pickup_status)&&i.request_date==S.cd&&i.grade!="Reject").sort((a,b)=>String(a.request_slot).localeCompare(String(b.request_slot))),n=stops.length,tot=stops.reduce((s,i)=>s+(+i.volume_litres||0),0),pt=stops.map((_,i)=>[24+i*(272/Math.max(1,n-1)),70+34*Math.sin(i*1.7)]);
+$("#ct").textContent=(S.cd==ist(0)?"Today":S.cd==ist(1)?"Tomorrow":dn(S.cd))+"'s route";$("#cs").textContent=`${n} stops, about ${tot.toFixed(0)} L`;
+$("#rt").innerHTML=`<div class="card ${c}"><svg viewBox="0 0 320 140" width="100%" role="img" aria-label="Schematic route"><rect width="320" height="140" rx="16" fill="#E2E8E1"/>${n>1?`<polyline points="${pt.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#206B4B" stroke-width="5" stroke-linecap="round"/>`:""}${pt.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="9" fill="${i==0||i==n-1?"#206B4B":"#CC7F12"}"/>`).join("")}</svg><p class="mute">Schematic route, ordered by time slot</p></div>`;
+$("#cl").innerHTML=(n?stops.map((s,i)=>`<div class="card ${c}"><div class="stop"><div><b>${i+1}. ${esc(s.vendor_name||s.area||"Stop")}${dem(s)}</b><span class="mute">${esc(s.volume_litres)} L, ${SLOT[s.request_slot]||""}</span></div><span class="g">${esc(s.grade)}</span></div></div>`).join("")+`<div class="card ${c}"><span class="lab">TRUCK LOAD</span><div class="kv"><span>${tot.toFixed(0)} / ${TRUCK} L${tot>TRUCK?" · "+Math.ceil(tot/TRUCK)+" trips":""}</span><b>${Math.min(100,Math.round(tot/TRUCK*100))}%</b></div><div class="trk"><i style="width:${Math.min(100,tot/TRUCK*100)}%"></i></div><span class="lab">DESTINATION (BIODIESEL FACILITY)</span><input id="ds" maxlength="80" value="${esc(S.dest)}"><p class="mute" id="sh"></p><button class="btn" id="sr">Start route</button></div>`:`<div class="card ${c}">No pickups requested for this day.</div>`);
+const sr=$("#sr");if(sr){const gate=()=>{const ok=tot>=TRUCK*MINFILL&&S.dest.trim();sr.disabled=!ok;$("#sh").textContent=ok?"Ready to start.":`Start when the truck is at least ${MINFILL*100}% full (${TRUCK*MINFILL} L) and a destination is set.`};gate();$("#ds").oninput=e=>{S.dest=e.target.value;gate()};sr.onclick=async()=>{const ids=stops.filter(s=>!s.demo).map(s=>s.id);if(!ids.length){sr.textContent="Demo route started (not saved)";notify(stops,tot,false);return}sr.disabled=true;const r=await post("/pickup",{listing_ids:ids,area:"Route",truck_litres:TRUCK,destination:S.dest.trim(),trips:Math.ceil(tot/TRUCK)});sr.textContent=r.pickup_id?"Route started ✓":"Could not start the route";if(r.pickup_id)notify(stops,tot,true)}}};
+draw(true);stag($("#app"));
+document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{S.cd=b.dataset.d;document.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x==b));draw()});$("#dm").onchange=e=>{S.demo=e.target.checked;draw()}}
+
+async function processor(){view(`<p class="mute">Loading…</p>`);await load();const mon=(()=>{const d=new Date(ist()+"T00:00");d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toLocaleDateString("en-CA")})();
+view(`<div class="top st"><div><span class="lab">PROCESSOR</span><h1>Incoming batches</h1></div><span class="chip2">Week of ${mon}</span></div>
+<div class="row st"><label class="mute"><input type="checkbox" id="dm" style="width:auto" ${S.demo?"checked":""}> Include demo data</label><label class="mute"><input type="checkbox" id="al" style="width:auto" ${S.all?"checked":""}> All time</label></div>
+<div id="pb"></div><details class="card st"><summary>Assumptions (editable estimates)</summary><div class="row">${[["A","Yield A"],["B","Yield B"],["C","Yield C"],["dd","Diesel/L"],["co","CO2e kg/L"]].map(([k,t])=>`<div><label class="lab">${t}</label><input class="as" data-k="${k}" type="number" step="0.01" value="${AS[k]}"></div>`).join("")}</div><p class="mute">Estimates from published ranges (FSSAI RUCO, USDA GAIN, lifecycle studies). See uco_reference_data.json.</p></details>`);
+const draw=f=>{const c=f?"st":"",it=all().filter(i=>S.all||S.demo&&i.demo||String(i.created_at||"").slice(0,10)>=mon),ok=it.filter(i=>i.grade&&i.grade!="Reject"),by={A:0,B:0,C:0,Reject:0};it.forEach(i=>{if(i.grade in by)by[i.grade]+=+i.volume_litres||0});
+const bd=ok.reduce((s,i)=>s+(+i.volume_litres||0)*AS[i.grade],0),mx=Math.max(1,...Object.values(by)),col={A:"#206B4B",B:"#CC7F12",C:"#8B6B3E",Reject:"#A8372B"},real=it.filter(i=>!i.demo),lc=it.filter(i=>i.lab_grade&&i.grade),match=lc.filter(i=>i.lab_grade==i.grade).length,rv=lc.length-match;
+$("#pb").innerHTML=`<div class="g3"><div class="card ${c}"><span class="lab">BY GRADE (LITRES)</span>${Object.entries(by).map(([k,v])=>`<div class="kv"><span>${k}</span><b>${v.toFixed(1)}</b></div><div class="hb" style="width:${Math.max(3,v/mx*100)}%;background:${col[k]}"></div>`).join("")}</div>
+<div class="card ${c}"><span class="lab">BIODIESEL YIELD ESTIMATE</span><div class="big"><span data-n="${bd.toFixed(1)}" data-d="1">${bd.toFixed(1)}</span> L</div><p class="mute">Based on grade mix and adjustable yield assumptions.</p><div class="kv"><span>Diesel displaced (est.)</span><b>${(bd*AS.dd).toFixed(1)} L</b></div><div class="kv"><span>CO2e avoided (est.)</span><b>${(bd*AS.co).toFixed(1)} kg</b></div></div>
+<div class="card ${c}"><span class="lab">CONTEXT</span><div class="kv"><span>India today</span><b>about 0.5-0.6%</b></div><div class="trk"><i style="width:11%"></i></div><div class="kv"><span>Target by 2030</span><b>5%</b></div><div class="trk"><i style="width:100%"></i></div><p class="mute">Feedstock collection is the bottleneck.</p></div></div>
+<div class="card ${c}"><span class="lab">LAB CHECK</span><p>${lc.length?`Photo grade matched lab grade in ${match} of ${lc.length} checked batches. ${rv} to review.`:"No lab results yet."}</p>${real.slice(0,6).map(i=>`<div class="kv"><span>${esc(i.vendor_name||i.area||"Batch")} · ${esc(i.grade)} · ${esc(i.volume_litres)} L</span><span><select class="sel" data-id="${esc(i.id)}"><option value="">Lab grade</option>${["A","B","C","Reject"].map(g=>`<option${i.lab_grade==g?" selected":""}>${g}</option>`).join("")}</select> <button class="chip sv" data-id="${esc(i.id)}">Save</button></span></div>`).join("")||`<p class="mute">Real batches appear here.</p>`}</div>`;
+document.querySelectorAll(".sv").forEach(b=>b.onclick=async()=>{const id=b.dataset.id,g=document.querySelector(`select[data-id="${id}"]`).value;if(!g)return;b.disabled=true;const r=await post("/lab-result",{listing_id:id,lab_grade:g});if(r.ok){const x=S.L.find(i=>i.id==id);if(x)x.lab_grade=g;draw()}else b.textContent="Failed"})};
+draw(true);stag($("#app"));
+$("#dm").onchange=e=>{S.demo=e.target.checked;draw()};$("#al").onchange=e=>{S.all=e.target.checked;draw()};document.querySelectorAll(".as").forEach(i=>i.oninput=()=>{AS[i.dataset.k]=+i.value||0;draw()})}
+
+const R={"#/vendor/capture":capture,"#/vendor/result":result,"#/vendor/pickup":pickup,"#/vendor/done":done,"#/collector":collector,"#/processor":processor};
+function route(){const h=location.hash,f=R[h];if(!f||(/result|pickup/.test(h)&&!S.res)||(/done/.test(h)&&!S.done)){location.hash="#/vendor/capture";return}
+$("#app").classList.toggle("wide",!h.includes("vendor"));document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",h.startsWith(a.dataset.r)));
+try{f()}catch(e){view(card("Something went wrong",e.message))}}
+addEventListener("hashchange",route);route();
+</script></body></html>
