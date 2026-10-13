@@ -4,7 +4,7 @@ Turn street vendors' used cooking oil into biodiesel feedstock. Vendors photogra
 
 Built for **WeMakeDevs x Amazon, Environmental Hacks** (Bharat Builds Tour, Waste and Energy track).
 
-**Live demo:** _add your Amplify URL here_
+**Live demo:** https://staging.d23bpimsljvz1v.amplifyapp.com/
 
 ## Why this problem
 India blends roughly 0.5-0.6% biodiesel against a 5% target for 2030 (USDA GAIN), so collecting enough feedstock is the bottleneck. Used cooking oil is a ready feedstock, and FSSAI's RUCO programme already targets its collection. At the same time, oil reused past the 25% total polar compounds limit is a food-safety concern. OilLoop gives vendors a reason to retire oil on time (they get paid) and gives processors a steadier, graded supply.
