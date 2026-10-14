@@ -16,15 +16,63 @@ India blends roughly 0.5-0.6% biodiesel against a 5% target for 2030 (USDA GAIN)
 4. **Processor**: sees litres by grade, estimated biodiesel, diesel displaced and CO2e, with editable assumptions, plus a **Lab check** where lab grades are recorded against the photo grade.
 
 ## Architecture
+```mermaid
+flowchart LR
+    U["Browser<br/>Static web app<br/>(AWS Amplify Hosting)"]
+
+    subgraph API1["API Gateway: HTTP API 1"]
+        R1["POST /upload-url"]
+        R2["POST /grade"]
+    end
+
+    subgraph API2["API Gateway: HTTP API 2"]
+        R3["GET /listings"]
+        R4["POST /request-pickup"]
+        R5["POST /pickup"]
+        R6["POST /lab-result"]
+    end
+
+    L1["Lambda: oilloop_get_upload_url"]
+    L2["Lambda: oilloop_grade_oil"]
+    L3["Lambda: oilloop_listings"]
+    S3[("Amazon S3<br/>oil photos")]
+    BR["Amazon Bedrock<br/>Nova 2 Lite (multimodal)"]
+    D1[("DynamoDB<br/>listings")]
+    D2[("DynamoDB<br/>pickups")]
+
+    U --> R1 --> L1
+    L1 -. "presigned URL" .-> U
+    U -- "PUT photo (presigned URL)" --> S3
+    U --> R2 --> L2
+    L2 -- "read photo" --> S3
+    L2 -- "read visual cues" --> BR
+    L2 -- "save listing" --> D1
+    U --> R3 & R4 & R5 & R6
+    R3 & R4 & R5 & R6 --> L3
+    L3 --> D1
+    L3 --> D2
 ```
-Browser (static HTML/JS on AWS Amplify)
-   |  presigned PUT                     |  HTTPS (two HTTP APIs)
-   v                                    v
- Amazon S3  <---- Lambda: grade_oil ---- API Gateway ---- Lambda: get_upload_url
-                     |   \
-                     |    +--> Amazon Bedrock (Nova 2 Lite, multimodal): reads visual cues as JSON
-                     v
-                 DynamoDB: listings, pickups  <---- Lambda: listings (list, request-pickup, pickup, lab-result)
+##Vendor Flow
+```mermaid
+sequenceDiagram
+    participant V as Vendor (browser)
+    participant A as API Gateway
+    participant S as Amazon S3
+    participant G as Lambda grade_oil
+    participant B as Amazon Bedrock
+    participant D as DynamoDB
+
+    V->>A: POST /upload-url
+    A-->>V: presigned URL and key
+    V->>S: PUT photo
+    V->>A: POST /grade (key, litres, area)
+    A->>G: invoke
+    G->>S: read photo
+    G->>B: read visual cues as JSON
+    B-->>G: darkness, sediment, foam, water layer
+    G->>G: apply grading rules, payout, estimates
+    G->>D: save listing
+    G-->>V: grade, cues, payout, retire check
 ```
 
 ### AWS services
