@@ -1,8 +1,6 @@
 # OilLoop
 
-Turn street vendors' used cooking oil into biodiesel feedstock. Vendors photograph their oil, get a graded payout estimate, and request a pickup. Collectors get a time-ordered route with a truck-load check. Processors see incoming batches, estimated biodiesel yield, diesel displaced and CO2e, and record lab results to measure how well the photo screening matches the lab.
-
-Built for **WeMakeDevs x Amazon, Environmental Hacks** (Bharat Builds Tour, Waste and Energy track).
+Routes street vendors’ used cooking oil to biodiesel processors. Vendors photograph their oil, get a graded payout estimate, and request a pickup. Collectors get a time-ordered route with a truck-load check. Processors see incoming batches, estimated biodiesel yield, diesel displaced and CO2e, and record lab results to measure how well the photo screening matches the lab.
 
 **Live demo:** https://staging.d23bpimsljvz1v.amplifyapp.com/
 
@@ -93,12 +91,12 @@ Bedrock reads visible cues from the photo as JSON (darkness, sediment, foam, wat
 
 | Grade | Label | Rule (darkness score + sediment score) |
 |---|---|---|
-| A | Prime feedstock | total 0-1 (light/medium colour, little or no sediment) |
-| B | Standard feedstock | total 2-3 |
+| A | Prime feedstock | total 0-2 (light/medium colour, little or no sediment) |
+| B | Standard feedstock | total 3-4 |
 | C | Low-grade feedstock | total 4+ (dark or black with heavy sediment) |
 | Reject | Not accepted | visible water layer or non-oil mixture |
 
-Darkness: light 0, medium 1, dark 2, black 3. Sediment: none 0, light 1, heavy 2.
+Darkness: light 0, medium 2, dark 3, black 4. Sediment: none 0, light 1, heavy 2.
 A **retire check** is raised when foam, dark colour or heavy sediment is seen, or when the vendor's reported reuse count reaches an adjustable limit (default 5, an assumption).
 
 This is a **screening grade, not a lab test**. The processor confirms by lab test. Real feedstock suitability depends on free fatty acids, moisture and impurities, which a photo cannot measure.
